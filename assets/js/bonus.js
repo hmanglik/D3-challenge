@@ -39,6 +39,7 @@ function xScale(censusData, chosenXAxis) {
 
 }
 
+// function used for updating y-scale var upon click on axis label
 function yScale(censusData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
@@ -63,6 +64,7 @@ function renderAxesX(newXScale, x_dynaAxis) {
 
 }
 
+// function used for updating yAxis var upon click on axis label
 function renderAxesY(newYScale, y_dynaAxis) {
     var leftAxis = d3.axisLeft(newYScale);
 
@@ -158,6 +160,7 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
 
+    // append y axis
     var y_dynaAxis = chartGroup.append("g")
         .classed("y-axis", true)
         .call(leftAxis);
@@ -173,8 +176,18 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
         .attr("r", 15)
         .attr("fill", "blue")
         .attr("opacity", ".5");
+    
+    // var stateText = chartGroup.selectAll(".text")
+    //     .data(censusData)
+    //     .enter()
+    //     .append("text")
+    //     .text(d => d.abbr)
+    //     .attr("x", d => xLinearScale(d[chosenXAxis]))
+    //     .attr("y", d => yLinearScale(d[chosenYAxis]))
+    //     .classed("stateText", true)
+    //     .attr("transform", `translate(-0.5,5)`)
 
-    // Create group for two x-axis labels
+    // Create group for three x-axis labels
     var xlabelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -199,8 +212,7 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
         .classed("inactive", true)
         .text("Household Income (Median)");
 
-    // append y axis
-
+    // Create group for three y-axis labels
     var ylabelsGroup = chartGroup.append("g")
 
     var healthLabel = ylabelsGroup.append("text")
@@ -290,7 +302,7 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
             }
         });
 
-    // x axis labels event listener
+    // y axis labels event listener
     ylabelsGroup.selectAll("text")
         .on("click", function () {
             // get value of selection
@@ -298,7 +310,7 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
             console.log(value);
             if (value !== chosenYAxis) {
 
-                // replaces chosenXAxis with value
+                // replaces chosenYAxis with value
                 chosenYAxis = value;
 
                 // console.log(chosenXAxis)
