@@ -64,34 +64,44 @@ d3.csv("assets/data/data.csv").then(function(demoData) {
     .attr("cy", d => yLinearScale(d.healthcare))
     .attr("r", "13")
     .classed("stateCircle", true)
-    circlesGroup.append("p")
+    // circlesGroup.append("p")
+    // .text(d => d.abbr)
+    // .classed("stateText", true)
+    // .style("fill", "black")
+
+    var stateText = chartGroup.selectAll(".text")
+    .data(demoData)
+    .enter()
+    .append("text")
     .text(d => d.abbr)
+    .attr("x", d => xLinearScale(d.poverty))
+    .attr("y", d => yLinearScale(d.healthcare))
     .classed("stateText", true)
-    .style("fill", "black")
+    .attr("transform", `translate(-0.5,5)`)
 
 
-    // // Step 6: Initialize tool tip
-    // // ==============================
-    // var toolTip = d3.tip()
-    //   .attr("class", "tooltip")
-    //   .offset([80, -60])
-    //   .html(function(d) {
-    //     return (`${d.rockband}<br>Hair length: ${d.hair_length}<br>Hits: ${d.num_hits}`);
-    //   });
+    // Step 6: Initialize tool tip
+    // ==============================
+    var toolTip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([80, -60])
+      .html(function(d) {
+        return (`${d.state}<br>Poverty: ${d.poverty}<br>Healthcare: ${d.healthcare}`);
+      });
 
-    // // Step 7: Create tooltip in the chart
-    // // ==============================
-    // chartGroup.call(toolTip);
+    // Step 7: Create tooltip in the chart
+    // ==============================
+    chartGroup.call(toolTip);
 
-    // // Step 8: Create event listeners to display and hide the tooltip
-    // // ==============================
-    // circlesGroup.on("click", function(data) {
-    //   toolTip.show(data, this);
-    // })
-    //   // onmouseout event
-    //   .on("mouseout", function(data, index) {
-    //     toolTip.hide(data);
-    //   });
+    // Step 8: Create event listeners to display and hide the tooltip
+    // ==============================
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data, this);
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
 
     // Create axes labels
     chartGroup.append("text")
@@ -104,6 +114,7 @@ d3.csv("assets/data/data.csv").then(function(demoData) {
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
       .text("In Poverty (%)");
+
   }).catch(function(error) {
     console.log(error);
   });
