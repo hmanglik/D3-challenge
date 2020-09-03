@@ -26,6 +26,7 @@ var chartGroup = svg.append("g")
 // Initial Params
 var chosenXAxis = "poverty";
 var chosenYAxis = "healthcare";
+
 // function used for updating x-scale var upon click on axis label
 function xScale(censusData, chosenXAxis) {
     // create scales
@@ -316,13 +317,13 @@ d3.csv("assets/data/data.csv").then(function (censusData) {
                 // console.log(chosenXAxis)
 
                 // functions here found above csv import
-                // updates x scale for new data
+                // updates y scale for new data
                 yLinearScale = yScale(censusData, chosenYAxis);
 
-                // updates x axis with transition
+                // updates y axis with transition
                 y_dynaAxis = renderAxesY(yLinearScale, y_dynaAxis);
 
-                // updates circles with new x values
+                // updates circles with new y values
                 circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
